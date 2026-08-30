@@ -4,42 +4,69 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { siteConfig } from '@/data/site';
 
+const strengths = [
+  'Product strategy',
+  'UI/UX design',
+  'Full-stack build',
+  'AI integrations',
+  'Performance optimization',
+  'Conversion-focused design',
+];
+
 export function AboutSection() {
   return (
-    <section id='about' className='py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-black to-black/50'>
-      <div className='max-w-7xl mx-auto'>
+    <section id='about' className='bg-gradient-to-b from-black to-black/50 px-4 py-20 sm:px-6 lg:px-8'>
+      <div className='mx-auto max-w-7xl'>
         <motion.div
-          className='text-center mb-16'
+          className='mb-16 text-center'
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <h2 className='text-4xl sm:text-5xl font-bold mb-4'>A little about me</h2>
+          <h2 className='mb-4 text-4xl font-bold sm:text-5xl'>A little about me</h2>
         </motion.div>
 
         <motion.div
-          className='grid grid-cols-1 md:grid-cols-2 gap-12 items-center'
+          className='grid items-center gap-12 md:grid-cols-2'
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          {/* Text */}
           <div className='space-y-6'>
-            <p className='text-lg text-gray-300 leading-relaxed'>
-              I'm a creative developer who enjoys turning ideas into real products. I like
-              experimenting with new technologies, building useful tools, designing
-              interfaces and figuring out how to make complicated things feel simple.
+            <p className='text-lg leading-relaxed text-gray-300'>
+              I’m a product-minded developer who enjoys turning rough ideas into polished digital
+              experiences that people actually want to use. My work sits at the intersection of design,
+              engineering, and business thinking: I care about how a product feels, how it works, and
+              how it helps a business grow.
             </p>
-            <p className='text-lg text-gray-300 leading-relaxed'>
-              I'm particularly interested in the intersection of software, AI and design.
-              Whether it's building a landing page that converts or prototyping an AI-powered
-              feature, I'm always looking for the next interesting challenge.
+
+            <p className='text-lg leading-relaxed text-gray-300'>
+              Over time, I’ve learned that the best digital work isn’t just about writing code or making
+              things look good. It’s about understanding the problem, simplifying the complexity, and
+              building something clear, fast, and credible. That mindset shapes the way I design
+              interfaces, develop websites, and build custom tools for real-world use.
             </p>
+
+            <p className='text-lg leading-relaxed text-gray-300'>
+              I enjoy working on ambitious projects where strategy, user experience, and technology all
+              matter. Whether it’s a premium landing page, a business website, or an AI-powered product,
+              I focus on clear systems, thoughtful experiences, and measurable outcomes.
+            </p>
+
+            <div className='flex flex-wrap gap-3 pt-2'>
+              {strengths.map((item) => (
+                <span
+                  key={item}
+                  className='rounded-full border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-200'
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
           </div>
 
-          {/* Profile Image */}
           <motion.div
             className='relative mx-auto w-full max-w-md'
             whileHover={{ scale: 1.02 }}
