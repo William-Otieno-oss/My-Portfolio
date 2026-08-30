@@ -1,15 +1,5 @@
 import { NextResponse } from 'next/server';
-import { Resend } from 'resend';
-
-function getResendClient() {
-  const apiKey = process.env.RESEND_API_KEY;
-
-  if (!apiKey) {
-    return null;
-  }
-
-  return new Resend(apiKey);
-}
+import { sendPortfolioEmail } from '@/lib/email';
 
 export async function POST(request: Request) {
   try {
@@ -19,31 +9,23 @@ export async function POST(request: Request) {
       .map(([key, value]) => `${key}: ${String(value || '[Answer]')}`)
       .join('\n');
 
-    const resend = getResendClient();
-    const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
-    const toEmail = process.env.RESEND_TO_EMAIL || 'williamotieno902@gmail.com';
-
-    if (!resend) {
-      console.error('RESEND_API_KEY is missing. Configure it in the environment before sending email.');
-      return NextResponse.json(
-        {
-          success: false,
-          message: 'Email delivery is not configured yet. Add RESEND_API_KEY to enable sending.',
-        },
-        { status: 503 }
-      );
-    }
-
-    const result = await resend.emails.send({
-      from: `Project Discovery <${fromEmail}>`,
-      to: [toEmail],
+    const toEmail = process.env.RESEND_TO_EMAIL || process.env.SMTP_TO_EMAIL || 'williamotieno902@gmail.com';
+    const response = await sendPortfolioEmail({
+      to: toEmail,
+      from: process.env.RESEND_FROM_EMAIL || process.env.SMTP_FROM_EMAIL || 'onboarding@resend.dev',
       subject: 'New client project discovery form submission',
       text: discoveryText,
       html: `<pre style="font-family: sans-serif; white-space: pre-wrap;">${discoveryText}</pre>`,
     });
 
-    if (result.error) {
-      throw new Error(result.error.message || 'Discovery email send failed');
+    if (!response.ok) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: response.message || 'Email delivery is not configured yet.',
+        },
+        { status: 503 }
+      );
     }
 
     return NextResponse.json({

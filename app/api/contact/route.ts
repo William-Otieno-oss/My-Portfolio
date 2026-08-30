@@ -1,15 +1,5 @@
 import { NextResponse } from 'next/server';
-import { Resend } from 'resend';
-
-function getResendClient() {
-  const apiKey = process.env.RESEND_API_KEY;
-
-  if (!apiKey) {
-    return null;
-  }
-
-  return new Resend(apiKey);
-}
+import { sendPortfolioEmail } from '@/lib/email';
 
 export async function POST(request: Request) {
   try {
@@ -26,25 +16,11 @@ export async function POST(request: Request) {
       );
     }
 
-    const resend = getResendClient();
-    const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
-    const toEmail = process.env.RESEND_TO_EMAIL || 'williamotieno902@gmail.com';
-
-    if (!resend) {
-      console.error('RESEND_API_KEY is missing. Configure it in the environment before sending email.');
-      return NextResponse.json(
-        {
-          success: false,
-          message: 'Email delivery is not configured yet. Add RESEND_API_KEY to enable sending.',
-        },
-        { status: 503 }
-      );
-    }
-
-    const result = await resend.emails.send({
-      from: `Portfolio Contact <${fromEmail}>`,
-      to: [toEmail],
+    const toEmail = process.env.RESEND_TO_EMAIL || process.env.SMTP_TO_EMAIL || 'williamotieno902@gmail.com';
+    const response = await sendPortfolioEmail({
+      to: toEmail,
       replyTo: email,
+      from: process.env.RESEND_FROM_EMAIL || process.env.SMTP_FROM_EMAIL || 'onboarding@resend.dev',
       subject: `New project inquiry from ${name} (${projectType ?? 'General'})`,
       text: `Name: ${name}\nEmail: ${email}\nProject Type: ${projectType ?? 'General'}\n\nMessage:\n${message}`,
       html: `
@@ -57,8 +33,14 @@ export async function POST(request: Request) {
       `,
     });
 
-    if (result.error) {
-      throw new Error(result.error.message || 'Email send failed');
+    if (!response.ok) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: response.message || 'Email delivery is not configured yet.',
+        },
+        { status: 503 }
+      );
     }
 
     return NextResponse.json({
