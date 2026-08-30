@@ -1,16 +1,23 @@
 import { NextResponse } from 'next/server';
 import { sendPortfolioEmail } from '@/lib/email';
 
+function isValidEmail(value: unknown) {
+  return typeof value === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+}
+
 export async function POST(request: Request) {
   try {
     const payload = await request.json();
-    const { name, email, projectType, message } = payload ?? {};
+    const name = String(payload?.name ?? '').trim();
+    const email = String(payload?.email ?? '').trim();
+    const projectType = String(payload?.projectType ?? '').trim();
+    const message = String(payload?.message ?? '').trim();
 
-    if (!name || !email || !message) {
+    if (!name || !projectType || !message || !isValidEmail(email)) {
       return NextResponse.json(
         {
           success: false,
-          message: 'Name, email, and message are required.',
+          message: 'Name, a valid email, project type, and message are required.',
         },
         { status: 400 }
       );

@@ -258,14 +258,22 @@ export function ClientDiscoveryForm() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const payload = Object.fromEntries(formData.entries());
+    const name = String(payload.name ?? '').trim();
+    const email = String(payload.email ?? '').trim();
+    const projectType = String(payload.projectType ?? '').trim();
+
+    if (!name || !email || !projectType || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setSubmitStatus('error');
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitStatus('idle');
 
     try {
-      const form = event.currentTarget;
-      const formData = new FormData(form);
-      const payload = Object.fromEntries(formData.entries());
-
       const response = await fetch('/api/discovery', {
         method: 'POST',
         headers: {
@@ -335,6 +343,31 @@ export function ClientDiscoveryForm() {
           </div>
 
           <form className='space-y-10' onSubmit={handleSubmit}>
+            <div className='rounded-xl border border-white/10 bg-slate-950/30 p-5'>
+              <h4 className='mb-4 text-xl font-semibold text-white'>Contact details</h4>
+              <div className='grid gap-5 md:grid-cols-3'>
+                <div>
+                  <label htmlFor='name' className='mb-2 block text-sm text-gray-300'>Name</label>
+                  <input id='name' name='name' type='text' required placeholder='Your full name' className='w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 hover:border-white/20 focus:border-blue-500 focus:outline-none transition-colors text-white placeholder-gray-500' />
+                </div>
+                <div>
+                  <label htmlFor='email' className='mb-2 block text-sm text-gray-300'>Email</label>
+                  <input id='email' name='email' type='email' required placeholder='you@example.com' className='w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 hover:border-white/20 focus:border-blue-500 focus:outline-none transition-colors text-white placeholder-gray-500' />
+                </div>
+                <div>
+                  <label htmlFor='projectType' className='mb-2 block text-sm text-gray-300'>Project type</label>
+                  <select id='projectType' name='projectType' required style={{ colorScheme: 'dark' }} className='w-full px-4 py-3 rounded-lg bg-slate-900 border border-white/10 hover:border-white/20 focus:border-blue-500 focus:outline-none transition-colors text-white [background-image:none]'>
+                    <option value='' className='bg-slate-900 text-white'>Select one</option>
+                    <option value='Website' className='bg-slate-900 text-white'>Website</option>
+                    <option value='Web App' className='bg-slate-900 text-white'>Web App</option>
+                    <option value='AI Product' className='bg-slate-900 text-white'>AI Product</option>
+                    <option value='Maintenance' className='bg-slate-900 text-white'>Maintenance</option>
+                    <option value='Other' className='bg-slate-900 text-white'>Other</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
             {discoverySections.map((section) => (
               <div key={section.title} className='space-y-5 border-b border-white/10 pb-8 last:border-b-0 last:pb-0'>
                 <h4 className='text-xl font-semibold text-white'>{section.title}</h4>

@@ -11,12 +11,21 @@ export function ContactSection() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setIsSubmitting(true);
-    setSubmitStatus('idle');
-
     const form = event.currentTarget;
     const formData = new FormData(form);
     const payload = Object.fromEntries(formData.entries());
+    const name = String(payload.name ?? '').trim();
+    const email = String(payload.email ?? '').trim();
+    const projectType = String(payload.projectType ?? '').trim();
+    const message = String(payload.message ?? '').trim();
+
+    if (!name || !email || !projectType || !message || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setSubmitStatus('error');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
 
     try {
       const response = await fetch('/api/contact', {
@@ -108,12 +117,13 @@ export function ContactSection() {
 
                 <div>
                   <label htmlFor='projectType' className='mb-2 block text-sm text-slate-300'>Project type</label>
-                  <select id='projectType' name='projectType' className='w-full rounded-xl border border-white/10 bg-slate-950/40 px-4 py-3 text-white focus:border-blue-500 focus:outline-none'>
-                    <option value='Website'>Website</option>
-                    <option value='Web App'>Web App</option>
-                    <option value='AI Product'>AI Product</option>
-                    <option value='Maintenance'>Maintenance</option>
-                    <option value='Other'>Other</option>
+                  <select id='projectType' name='projectType' required style={{ colorScheme: 'dark' }} className='w-full rounded-xl border border-white/10 bg-slate-900 px-4 py-3 text-white placeholder:text-slate-500 focus:border-blue-500 focus:outline-none [background-image:none]'>
+                    <option value='' className='bg-slate-900 text-white'>Select project type</option>
+                    <option value='Website' className='bg-slate-900 text-white'>Website</option>
+                    <option value='Web App' className='bg-slate-900 text-white'>Web App</option>
+                    <option value='AI Product' className='bg-slate-900 text-white'>AI Product</option>
+                    <option value='Maintenance' className='bg-slate-900 text-white'>Maintenance</option>
+                    <option value='Other' className='bg-slate-900 text-white'>Other</option>
                   </select>
                 </div>
 

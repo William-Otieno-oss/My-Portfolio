@@ -1,13 +1,36 @@
 import { NextResponse } from 'next/server';
 import { sendPortfolioEmail } from '@/lib/email';
 
+function isValidEmail(value: unknown) {
+  return typeof value === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+}
+
 export async function POST(request: Request) {
   try {
     const payload = await request.json();
+    const name = String(payload?.name ?? payload?.fullName ?? payload?.contactName ?? '').trim();
+    const email = String(payload?.email ?? payload?.emailAddress ?? '').trim();
+    const projectType = String(payload?.projectType ?? '').trim();
 
-    const discoveryText = Object.entries(payload)
-      .map(([key, value]) => `${key}: ${String(value || '[Answer]')}`)
-      .join('\n');
+    if (!name || !projectType || !isValidEmail(email)) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Name, a valid email, and project type are required.',
+        },
+        { status: 400 }
+      );
+    }
+
+    const discoveryText = [
+      `Contact Name: ${name}`,
+      `Email: ${email}`,
+      `Project Type: ${projectType}`,
+      '',
+      ...Object.entries(payload)
+        .filter(([key]) => key !== 'name' && key !== 'email' && key !== 'projectType')
+        .map(([key, value]) => `${key}: ${String(value || '[Answer]')}`),
+    ].join('\n');
 
     const toEmail = process.env.RESEND_TO_EMAIL || process.env.SMTP_TO_EMAIL || 'williamotieno902@gmail.com';
     const response = await sendPortfolioEmail({

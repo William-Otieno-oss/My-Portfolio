@@ -29,6 +29,15 @@ function getConfiguredFromAddress() {
   return process.env.RESEND_FROM_EMAIL || process.env.SMTP_FROM_EMAIL || 'onboarding@resend.dev';
 }
 
+function normalizeReplyTo(value?: string) {
+  if (!value) {
+    return undefined;
+  }
+
+  const trimmed = value.trim();
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed) ? trimmed : undefined;
+}
+
 function getResendClient() {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) return null;
@@ -68,7 +77,7 @@ function htmlEscape(value: string) {
 export async function sendPortfolioEmail(options: EmailSendOptions) {
   const recipients = normalizeRecipients(options.to);
   const fromAddress = options.from || getConfiguredFromAddress();
-  const replyTo = options.replyTo;
+  const replyTo = normalizeReplyTo(options.replyTo);
 
   const resend = getResendClient();
   if (resend) {
