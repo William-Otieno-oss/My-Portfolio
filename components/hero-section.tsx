@@ -40,58 +40,76 @@ export function HeroSection() {
         animate='visible'
       >
         <motion.div
-          className='mb-6 inline-flex items-center gap-2 rounded-full border border-blue-400/30 bg-blue-500/10 px-4 py-2 text-xs font-medium uppercase tracking-[0.24em] text-blue-200'
+          className='mb-6 inline-flex items-center gap-2 rounded-full border border-blue-400/30 bg-blue-500/10 px-4 py-2 text-[10px] font-medium uppercase tracking-[0.24em] text-blue-200 sm:text-xs'
           variants={itemVariants}
         >
           {siteConfig.status}
         </motion.div>
 
         <motion.h1
-          className='mb-6 text-5xl font-black tracking-[-0.06em] text-white sm:text-6xl lg:text-7xl'
+          className='mb-6 text-balance text-5xl font-black tracking-[-0.06em] text-white sm:text-6xl lg:text-7xl'
           variants={itemVariants}
         >
-          Hey, I&apos;m {siteConfig.name}.
+          I design and build
           <br />
           <span className='bg-gradient-to-r from-blue-300 via-blue-500 to-violet-400 bg-clip-text text-transparent'>
-            I build sharp digital experiences.
+            premium digital experiences
           </span>
         </motion.h1>
 
         <motion.p
-          className='mb-8 text-xl text-slate-300 sm:text-2xl'
+          className='mx-auto mb-6 max-w-3xl text-lg font-medium text-slate-200 sm:text-xl'
           variants={itemVariants}
         >
-          Product-focused developer. Designer-minded builder. Systems thinker.
+          Product-minded developer, designer-led builder, and systems thinker helping brands turn ideas
+          into polished, conversion-ready experiences.
         </motion.p>
 
         <motion.p
-          className='mx-auto mb-12 max-w-2xl text-lg text-slate-400'
+          className='mx-auto mb-10 max-w-2xl text-base text-slate-400 sm:text-lg'
           variants={itemVariants}
         >
           {siteConfig.shortBio}
         </motion.p>
 
         <motion.div
-          className='flex flex-col justify-center gap-4 sm:flex-row'
+          className='mb-12 flex flex-wrap items-center justify-center gap-3 text-sm text-slate-300'
+          variants={itemVariants}
+        >
+          {['Web design', 'Full-stack builds', 'AI integrations', 'Conversion strategy'].map((item) => (
+            <span key={item} className='rounded-full border border-white/10 bg-white/5 px-3 py-2'>
+              {item}
+            </span>
+          ))}
+        </motion.div>
+
+        <motion.div
+          className='mb-14 flex flex-col justify-center gap-4 sm:flex-row'
           variants={itemVariants}
         >
           <a
             href='#work'
-            className='rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 px-8 py-3 font-medium text-white shadow-lg shadow-blue-500/20 transition hover:translate-y-[-1px] hover:shadow-blue-500/40'
+            className='rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 px-8 py-3 font-semibold text-white shadow-[0_12px_30px_rgba(37,99,235,0.35)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(37,99,235,0.45)]'
           >
             View my work
           </a>
           <a
-            href='/discovery'
-            className='rounded-xl border border-white/15 bg-white/5 px-8 py-3 font-medium text-white transition hover:border-blue-400/40 hover:bg-blue-500/10'
+            href='/discovery#pricing'
+            className='rounded-xl border border-blue-400/30 bg-slate-900/60 px-8 py-3 font-medium text-blue-100 backdrop-blur-sm transition duration-200 hover:-translate-y-0.5 hover:border-blue-300/60 hover:bg-blue-500/10'
           >
-            Book a discovery call
+            View pricing
+          </a>
+          <a
+            href='/discovery'
+            className='rounded-xl border border-white/15 bg-white/5 px-8 py-3 font-medium text-white transition duration-200 hover:-translate-y-0.5 hover:border-white/25 hover:bg-white/10'
+          >
+            Start a project
           </a>
         </motion.div>
       </motion.div>
 
       <motion.div
-        className='pointer-events-none absolute bottom-5 left-1/2 -translate-x-1/2 z-20'
+        className='pointer-events-none absolute left-1/2 top-[calc(100%-138px)] z-10 -translate-x-1/2 sm:top-[calc(100%-150px)]'
         variants={itemVariants}
       >
         <div className='pointer-events-auto'>

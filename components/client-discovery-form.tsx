@@ -466,7 +466,7 @@ export function ClientDiscoveryForm() {
         </div>
       </div>
 
-      <div className='space-y-8'>
+      <div id='pricing' className='space-y-8'>
         <div className='text-center'>
           <p className='text-xs uppercase tracking-[0.3em] text-blue-300'>Service packages</p>
           <h3 className='mt-3 text-3xl font-semibold text-white'>Flexible pricing for every stage</h3>

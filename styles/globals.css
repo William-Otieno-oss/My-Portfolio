@@ -23,11 +23,16 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 ::selection {
   background: rgba(96, 165, 250, 0.35);
   color: #f8fafc;
+}
+
+img {
+  user-select: none;
 }
 
 @layer utilities {

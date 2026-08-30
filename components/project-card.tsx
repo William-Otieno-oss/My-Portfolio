@@ -44,7 +44,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
   return (
     <motion.div
-      className='group rounded-lg overflow-hidden border border-white/10 bg-white/5 hover:border-white/20 transition-all duration-300 cursor-pointer'
+      className='group cursor-pointer overflow-hidden rounded-2xl border border-white/10 bg-slate-950/45 shadow-[0_18px_40px_rgba(15,23,42,0.28)] transition-all duration-300 hover:-translate-y-1 hover:border-blue-400/40 hover:bg-slate-900/70'
       variants={cardVariants}
       whileHover='hover'
       onClick={handleCardClick}
@@ -53,62 +53,55 @@ export function ProjectCard({ project }: ProjectCardProps) {
       tabIndex={0}
       aria-label={`View project details for ${project.title}`}
     >
-      {/* Image */}
       <motion.div
-        className='relative w-full h-64 overflow-hidden bg-gradient-to-br from-blue-500/20 to-purple-500/20'
+        className='relative h-64 w-full overflow-hidden bg-gradient-to-br from-blue-500/20 to-purple-500/20'
         variants={imageVariants}
       >
         <Image
           src={project.imageUrl}
           alt={project.title}
           fill
-          className='object-cover'
+          className='object-cover transition duration-500 group-hover:scale-105'
         />
-        <div className='absolute inset-0 bg-gradient-to-t from-black/60 to-transparent'></div>
+        <div className='absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/10 to-transparent'></div>
       </motion.div>
 
-      {/* Content */}
       <div className='p-6'>
-        {/* Category */}
         <div className='mb-3'>
-          <span className='text-xs px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30'>
+          <span className='rounded-full border border-blue-500/30 bg-blue-500/15 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.18em] text-blue-200'>
             {project.category.charAt(0).toUpperCase() + project.category.slice(1)}
           </span>
         </div>
 
-        {/* Title */}
-        <h3 className='text-xl font-semibold mb-2 group-hover:text-blue-400 transition-colors'>
+        <h3 className='mb-2 text-xl font-semibold text-white transition-colors group-hover:text-blue-300'>
           {project.title}
         </h3>
 
-        {/* Description */}
-        <p className='text-gray-400 text-sm mb-4 line-clamp-2'>
+        <p className='mb-4 line-clamp-2 text-sm leading-relaxed text-slate-300'>
           {project.shortDescription}
         </p>
 
-        {/* Stack */}
-        <div className='flex flex-wrap gap-2 mb-4'>
+        <div className='mb-4 flex flex-wrap gap-2'>
           {project.stack.slice(0, 3).map((tech) => (
             <span
               key={tech}
-              className='text-xs px-2 py-1 rounded bg-white/5 text-gray-300 border border-white/10'
+              className='rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.1em] text-slate-200'
             >
               {tech}
             </span>
           ))}
         </div>
 
-        {/* Links */}
-        <div className='flex gap-3 pt-4 border-t border-white/10'>
+        <div className='flex gap-3 border-t border-white/10 pt-4'>
           {project.demoUrl && (
             <a
               href={project.demoUrl}
               target='_blank'
               rel='noreferrer'
-              className='flex items-center gap-2 text-sm text-gray-300 hover:text-white transition-colors'
+              className='flex items-center gap-2 text-sm text-slate-200 transition-colors hover:text-white'
               onClick={(e) => e.stopPropagation()}
             >
-              <ExternalLink className='w-4 h-4' />
+              <ExternalLink className='h-4 w-4' />
               Demo
             </a>
           )}
@@ -117,10 +110,10 @@ export function ProjectCard({ project }: ProjectCardProps) {
               href={project.githubUrl}
               target='_blank'
               rel='noreferrer'
-              className='flex items-center gap-2 text-sm text-gray-300 hover:text-white transition-colors'
+              className='flex items-center gap-2 text-sm text-slate-200 transition-colors hover:text-white'
               onClick={(e) => e.stopPropagation()}
             >
-              <Github className='w-4 h-4' />
+              <Github className='h-4 w-4' />
               Code
             </a>
           )}

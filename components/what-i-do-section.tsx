@@ -59,14 +59,14 @@ export function WhatIDoSection() {
           {whatIDo.map((item, index) => (
             <motion.div
               key={index}
-              className='p-6 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-300 group'
+              className='group rounded-2xl border border-white/10 bg-slate-950/40 p-6 shadow-[0_12px_32px_rgba(15,23,42,0.28)] transition-all duration-300 hover:-translate-y-1 hover:border-blue-400/40 hover:bg-slate-900/70'
               variants={cardVariants}
             >
-              <div className='mb-4 text-blue-400 group-hover:text-blue-300 transition-colors'>
+              <div className='mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl border border-blue-400/30 bg-blue-500/10 text-blue-300 transition-colors group-hover:bg-blue-500/15 group-hover:text-blue-200'>
                 {getIcon(item.icon)}
               </div>
-              <h3 className='text-lg font-semibold mb-2'>{item.title}</h3>
-              <p className='text-gray-400 text-sm'>{item.description}</p>
+              <h3 className='mb-2 text-lg font-semibold text-white'>{item.title}</h3>
+              <p className='text-sm leading-relaxed text-slate-300'>{item.description}</p>
             </motion.div>
           ))}
         </motion.div>
