@@ -47,7 +47,7 @@ export default function RootLayout({
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <link rel='icon' href='/favicon.ico' />
       </head>
-      <body className='bg-black text-white'>
+      <body className='bg-black text-white' suppressHydrationWarning>
         <Navbar />
         <main>{children}</main>
         <Footer />
